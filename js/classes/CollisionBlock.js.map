@@ -1,0 +1,1 @@
+{"version":3,"file":"CollisionBlock.js","sourceRoot":"","sources":["../../ts/classes/CollisionBlock.ts"],"names":[],"mappings":"AAAA;IAKE,wBAAY,EAAY;YAAV,QAAQ,cAAA;QACpB,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAA;QACxB,IAAI,CAAC,KAAK,GAAG,EAAE,CAAA;QACf,IAAI,CAAC,MAAM,GAAG,EAAE,CAAA;IAClB,CAAC;IACH,qBAAC;AAAD,CAAC,AAVD,IAUC"}
