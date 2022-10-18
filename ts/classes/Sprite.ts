@@ -74,17 +74,7 @@ class Sprite {
       height: this.height,
     }
 
-    c.drawImage(
-      this.image,
-      cropbox.position.x,
-      cropbox.position.y,
-      cropbox.width,
-      cropbox.height,
-      this.position.x,
-      this.position.y,
-      this.width,
-      this.height
-    )
+    c.drawImage(this.image, cropbox.position.x, cropbox.position.y, cropbox.width, cropbox.height, this.position.x, this.position.y, this.width, this.height)
 
     this.updateFrames()
   }
@@ -93,23 +83,30 @@ class Sprite {
     this.autoplay = true
   }
 
+  playOff() {
+    this.autoplay = false
+  }
+
   updateFrames() {
-    if (!this.autoplay) return
+    if (!this.autoplay) {
+      this.elapsedFrames--
 
-    this.elapsedFrames++
+      if (this.elapsedFrames % this.frameBuffer) {
+        if (this.currentFrame && this.currentFrame <= this.frameRate - 1) this.currentFrame--
+      }
+    } else {
+      this.elapsedFrames++
 
-    if (!(this.elapsedFrames % this.frameBuffer)) {
-      if (this.currentFrame < this.frameRate - 1) this.currentFrame++
-      else if (this.loop) this.currentFrame = 0
-    }
+      if (!(this.elapsedFrames % this.frameBuffer)) {
+        if (this.currentFrame < this.frameRate - 1) this.currentFrame++
+        else if (this.loop) this.currentFrame = 0
+      }
 
-    if (this.currentAnimation?.onComplete) {
-      if (
-        this.currentFrame === this.frameRate - 1 &&
-        !this.currentAnimation.isActive
-      ) {
-        this.currentAnimation.onComplete()
-        this.currentAnimation.isActive = true
+      if (this.currentAnimation?.onComplete) {
+        if (this.currentFrame === this.frameRate - 1 && !this.currentAnimation.isActive) {
+          this.currentAnimation.onComplete()
+          this.currentAnimation.isActive = true
+        }
       }
     }
   }

@@ -5,8 +5,7 @@ window.addEventListener('keydown', function (event) {
         case 'ArrowUp':
             for (var _i = 0, doors_1 = doors; _i < doors_1.length; _i++) {
                 var door = doors_1[_i];
-                if (player.hitbox.position.x + player.hitbox.width <=
-                    door.position.x + door.width &&
+                if (player.hitbox.position.x + player.hitbox.width <= door.position.x + door.width &&
                     player.hitbox.position.x >= door.position.x &&
                     player.hitbox.position.y + player.hitbox.height >= door.position.y &&
                     player.hitbox.position.y <= door.position.y + door.height) {

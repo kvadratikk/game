@@ -46,10 +46,12 @@ var player = new Player({
                     onComplete: function () {
                         level = level === 3 ? 1 : level + 1;
                         levels[level].init();
-                        player.switchSprite('idleRight');
                         player.preventInput = false;
                         gsap.to(overlay, {
                             opacity: 0,
+                            onComplete: function () {
+                                player.switchSprite('idleRight');
+                            },
                         });
                     },
                 });
@@ -152,6 +154,20 @@ function animate() {
     doors.forEach(function (door) {
         door.draw();
     });
+    if (keys.a.pressed || keys.d.pressed) {
+        for (var _i = 0, doors_1 = doors; _i < doors_1.length; _i++) {
+            var door = doors_1[_i];
+            if (player.hitbox.position.x + player.hitbox.width <= door.position.x + door.width &&
+                player.hitbox.position.x >= door.position.x &&
+                player.hitbox.position.y + player.hitbox.height >= door.position.y &&
+                player.hitbox.position.y <= door.position.y + door.height) {
+                door.play();
+            }
+            else {
+                door.playOff();
+            }
+        }
+    }
     player.handleInput(keys);
     player.draw();
     player.update();

@@ -43,22 +43,31 @@ var Sprite = (function () {
     Sprite.prototype.play = function () {
         this.autoplay = true;
     };
+    Sprite.prototype.playOff = function () {
+        this.autoplay = false;
+    };
     Sprite.prototype.updateFrames = function () {
         var _a;
-        if (!this.autoplay)
-            return;
-        this.elapsedFrames++;
-        if (!(this.elapsedFrames % this.frameBuffer)) {
-            if (this.currentFrame < this.frameRate - 1)
-                this.currentFrame++;
-            else if (this.loop)
-                this.currentFrame = 0;
+        if (!this.autoplay) {
+            this.elapsedFrames--;
+            if (this.elapsedFrames % this.frameBuffer) {
+                if (this.currentFrame && this.currentFrame <= this.frameRate - 1)
+                    this.currentFrame--;
+            }
         }
-        if ((_a = this.currentAnimation) === null || _a === void 0 ? void 0 : _a.onComplete) {
-            if (this.currentFrame === this.frameRate - 1 &&
-                !this.currentAnimation.isActive) {
-                this.currentAnimation.onComplete();
-                this.currentAnimation.isActive = true;
+        else {
+            this.elapsedFrames++;
+            if (!(this.elapsedFrames % this.frameBuffer)) {
+                if (this.currentFrame < this.frameRate - 1)
+                    this.currentFrame++;
+                else if (this.loop)
+                    this.currentFrame = 0;
+            }
+            if ((_a = this.currentAnimation) === null || _a === void 0 ? void 0 : _a.onComplete) {
+                if (this.currentFrame === this.frameRate - 1 && !this.currentAnimation.isActive) {
+                    this.currentAnimation.onComplete();
+                    this.currentAnimation.isActive = true;
+                }
             }
         }
     };
