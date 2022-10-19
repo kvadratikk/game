@@ -13,7 +13,6 @@ window.addEventListener('keydown', function (event) {
                     player.velocity.y = 0;
                     player.preventInput = true;
                     player.switchSprite('enterDoor');
-                    door.play();
                 }
             }
             keys.w.pressed = true;
