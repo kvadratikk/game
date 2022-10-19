@@ -5,7 +5,7 @@ canvas.width = 1024
 canvas.height = 576
 
 let parsedCollisions: number[][]
-let collisionBlocks: CollisionBlock[]
+let collisionBlocks: CollisionBlock[] = collisionsLevel1.parse2D().createObjectsFrom2D()
 let background: Sprite = new Sprite({
   position: { x: 0, y: 0 },
   imageSrc: './img/backgroundLevel1.png',
@@ -60,12 +60,18 @@ const player = new Player({
           onComplete: () => {
             level = level === 3 ? 1 : level + 1
             levels[level].init()
-            background = levels[level].background
             doors = levels[level].doors
-            player.preventInput = false
+            doors[0].playOff()
+            background = levels[level].background
+            player.position.x = levels[level].playerPosition.x
+            player.position.y = levels[level].playerPosition.y
+            player.collisionBlocks = levels[level].collisionBlocks
             player.switchSprite('idleRight')
             gsap.to(overlay, {
               opacity: 0,
+              onComplete: () => {
+                player.preventInput = false
+              },
             })
           },
         })
@@ -76,6 +82,11 @@ const player = new Player({
 
 let levels = {
   1: {
+    collisionBlocks: collisionsLevel1.parse2D().createObjectsFrom2D(),
+    playerPosition: {
+      x: 200,
+      y: 200,
+    },
     background: new Sprite({
       position: { x: 0, y: 0 },
       imageSrc: './img/backgroundLevel1.png',
@@ -91,14 +102,15 @@ let levels = {
       }),
     ],
     init: () => {
-      parsedCollisions = collisionsLevel1.parse2D()
-      collisionBlocks = parsedCollisions.createObjectsFrom2D()
-      player.collisionBlocks = collisionBlocks
-
       if (player.currentAnimation) player.currentAnimation.isActive = false
     },
   },
   2: {
+    collisionBlocks: collisionsLevel2.parse2D().createObjectsFrom2D(),
+    playerPosition: {
+      x: 96,
+      y: 140,
+    },
     background: new Sprite({
       position: { x: 0, y: 0 },
       imageSrc: './img/backgroundLevel2.png',
@@ -114,16 +126,15 @@ let levels = {
       }),
     ],
     init: () => {
-      parsedCollisions = collisionsLevel2.parse2D()
-      collisionBlocks = parsedCollisions.createObjectsFrom2D()
-      player.collisionBlocks = collisionBlocks
-      player.position.x = 96
-      player.position.y = 140
-
       if (player.currentAnimation) player.currentAnimation.isActive = false
     },
   },
   3: {
+    collisionBlocks: collisionsLevel3.parse2D().createObjectsFrom2D(),
+    playerPosition: {
+      x: 750,
+      y: 255,
+    },
     background: new Sprite({
       position: { x: 0, y: 0 },
       imageSrc: './img/backgroundLevel3.png',
@@ -139,12 +150,6 @@ let levels = {
       }),
     ],
     init: () => {
-      parsedCollisions = collisionsLevel3.parse2D()
-      collisionBlocks = parsedCollisions.createObjectsFrom2D()
-      player.collisionBlocks = collisionBlocks
-      player.position.x = 750
-      player.position.y = 255
-
       if (player.currentAnimation) player.currentAnimation.isActive = false
     },
   },
@@ -189,9 +194,26 @@ function animate() {
     }
   }
 
-  player.handleInput(keys)
   player.draw()
   player.update()
+
+  if (keys.w.pressed) {
+    for (let door of doors) {
+      if (
+        player.hitbox.position.x + player.hitbox.width <= door.position.x + door.width &&
+        player.hitbox.position.x >= door.position.x &&
+        player.hitbox.position.y + player.hitbox.height >= door.position.y &&
+        player.hitbox.position.y <= door.position.y + door.height
+      ) {
+        player.preventInput = true
+        player.velocity.x = 0
+        player.velocity.y = 0
+        player.switchSprite('enterDoor')
+      }
+    }
+  }
+
+  player.handleInput(keys)
 
   c.save()
   c.globalAlpha = overlay.opacity
@@ -201,4 +223,5 @@ function animate() {
 }
 
 levels[level].init()
+player.collisionBlocks = collisionBlocks
 animate()

@@ -82,18 +82,13 @@ var Player = (function (_super) {
     Player.prototype.checkForHorizontalCollisions = function () {
         for (var _i = 0, _a = this.collisionBlocks; _i < _a.length; _i++) {
             var collisionBlock = _a[_i];
-            if (this.hitbox.position.x <=
-                collisionBlock.position.x + collisionBlock.width &&
-                this.hitbox.position.x + this.hitbox.width >=
-                    collisionBlock.position.x &&
-                this.hitbox.position.y + this.hitbox.height >=
-                    collisionBlock.position.y &&
-                this.hitbox.position.y <=
-                    collisionBlock.position.y + collisionBlock.height) {
+            if (this.hitbox.position.x <= collisionBlock.position.x + collisionBlock.width &&
+                this.hitbox.position.x + this.hitbox.width >= collisionBlock.position.x &&
+                this.hitbox.position.y + this.hitbox.height >= collisionBlock.position.y &&
+                this.hitbox.position.y <= collisionBlock.position.y + collisionBlock.height) {
                 if (this.velocity.x < 0) {
                     var offset = this.hitbox.position.x - this.position.x;
-                    this.position.x =
-                        collisionBlock.position.x + collisionBlock.width - offset + 0.01;
+                    this.position.x = collisionBlock.position.x + collisionBlock.width - offset + 0.01;
                     break;
                 }
                 if (this.velocity.x > 0) {
@@ -107,14 +102,10 @@ var Player = (function (_super) {
     Player.prototype.checkForVerticalCollisions = function () {
         for (var _i = 0, _a = this.collisionBlocks; _i < _a.length; _i++) {
             var collisionBlock = _a[_i];
-            if (this.hitbox.position.x <=
-                collisionBlock.position.x + collisionBlock.width &&
-                this.hitbox.position.x + this.hitbox.width >=
-                    collisionBlock.position.x &&
-                this.hitbox.position.y + this.hitbox.height >=
-                    collisionBlock.position.y &&
-                this.hitbox.position.y <=
-                    collisionBlock.position.y + collisionBlock.height) {
+            if (this.hitbox.position.x <= collisionBlock.position.x + collisionBlock.width &&
+                this.hitbox.position.x + this.hitbox.width >= collisionBlock.position.x &&
+                this.hitbox.position.y + this.hitbox.height >= collisionBlock.position.y &&
+                this.hitbox.position.y <= collisionBlock.position.y + collisionBlock.height) {
                 if (this.velocity.y < 0) {
                     this.velocity.y = 0;
                     var offset = this.hitbox.position.y - this.position.y;
