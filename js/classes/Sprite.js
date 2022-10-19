@@ -49,11 +49,8 @@ var Sprite = (function () {
     Sprite.prototype.updateFrames = function () {
         var _a;
         if (!this.autoplay) {
-            this.elapsedFrames--;
-            if (this.elapsedFrames % this.frameBuffer) {
-                if (this.currentFrame && this.currentFrame <= this.frameRate - 1)
-                    this.currentFrame--;
-            }
+            if (this.currentFrame && this.currentFrame <= this.frameRate - 1)
+                this.currentFrame--;
         }
         else {
             this.elapsedFrames++;
