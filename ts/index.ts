@@ -6,8 +6,20 @@ canvas.height = 576
 
 let parsedCollisions: number[][]
 let collisionBlocks: CollisionBlock[]
-let background: Sprite
-let doors: Sprite[]
+let background: Sprite = new Sprite({
+  position: { x: 0, y: 0 },
+  imageSrc: './img/backgroundLevel1.png',
+})
+let doors: Sprite[] = [
+  new Sprite({
+    position: { x: 785, y: 270 },
+    imageSrc: './img/doorOpen.png',
+    frameRate: 5,
+    frameBuffer: 5,
+    loop: false,
+    autoplay: false,
+  }),
+]
 let level = 1
 const player = new Player({
   imageSrc: './img/king/idle.png',
@@ -48,12 +60,12 @@ const player = new Player({
           onComplete: () => {
             level = level === 3 ? 1 : level + 1
             levels[level].init()
+            background = levels[level].background
+            doors = levels[level].doors
             player.preventInput = false
+            player.switchSprite('idleRight')
             gsap.to(overlay, {
               opacity: 0,
-              onComplete: () => {
-                player.switchSprite('idleRight')
-              },
             })
           },
         })
@@ -64,30 +76,43 @@ const player = new Player({
 
 let levels = {
   1: {
+    background: new Sprite({
+      position: { x: 0, y: 0 },
+      imageSrc: './img/backgroundLevel1.png',
+    }),
+    doors: [
+      new Sprite({
+        position: { x: 785, y: 270 },
+        imageSrc: './img/doorOpen.png',
+        frameRate: 5,
+        frameBuffer: 5,
+        loop: false,
+        autoplay: false,
+      }),
+    ],
     init: () => {
       parsedCollisions = collisionsLevel1.parse2D()
       collisionBlocks = parsedCollisions.createObjectsFrom2D()
       player.collisionBlocks = collisionBlocks
 
       if (player.currentAnimation) player.currentAnimation.isActive = false
-
-      background = new Sprite({
-        position: { x: 0, y: 0 },
-        imageSrc: './img/backgroundLevel1.png',
-      })
-      doors = [
-        new Sprite({
-          position: { x: 785, y: 270 },
-          imageSrc: './img/doorOpen.png',
-          frameRate: 5,
-          frameBuffer: 5,
-          loop: false,
-          autoplay: false,
-        }),
-      ]
     },
   },
   2: {
+    background: new Sprite({
+      position: { x: 0, y: 0 },
+      imageSrc: './img/backgroundLevel2.png',
+    }),
+    doors: [
+      new Sprite({
+        position: { x: 772, y: 336 },
+        imageSrc: './img/doorOpen.png',
+        frameRate: 5,
+        frameBuffer: 5,
+        loop: false,
+        autoplay: false,
+      }),
+    ],
     init: () => {
       parsedCollisions = collisionsLevel2.parse2D()
       collisionBlocks = parsedCollisions.createObjectsFrom2D()
@@ -96,24 +121,23 @@ let levels = {
       player.position.y = 140
 
       if (player.currentAnimation) player.currentAnimation.isActive = false
-
-      background = new Sprite({
-        position: { x: 0, y: 0 },
-        imageSrc: './img/backgroundLevel2.png',
-      })
-      doors = [
-        new Sprite({
-          position: { x: 772, y: 336 },
-          imageSrc: './img/doorOpen.png',
-          frameRate: 5,
-          frameBuffer: 5,
-          loop: false,
-          autoplay: false,
-        }),
-      ]
     },
   },
   3: {
+    background: new Sprite({
+      position: { x: 0, y: 0 },
+      imageSrc: './img/backgroundLevel3.png',
+    }),
+    doors: [
+      new Sprite({
+        position: { x: 176, y: 335 },
+        imageSrc: './img/doorOpen.png',
+        frameRate: 5,
+        frameBuffer: 5,
+        loop: false,
+        autoplay: false,
+      }),
+    ],
     init: () => {
       parsedCollisions = collisionsLevel3.parse2D()
       collisionBlocks = parsedCollisions.createObjectsFrom2D()
@@ -122,21 +146,6 @@ let levels = {
       player.position.y = 255
 
       if (player.currentAnimation) player.currentAnimation.isActive = false
-
-      background = new Sprite({
-        position: { x: 0, y: 0 },
-        imageSrc: './img/backgroundLevel3.png',
-      })
-      doors = [
-        new Sprite({
-          position: { x: 176, y: 335 },
-          imageSrc: './img/doorOpen.png',
-          frameRate: 5,
-          frameBuffer: 5,
-          loop: false,
-          autoplay: false,
-        }),
-      ]
     },
   },
 }
